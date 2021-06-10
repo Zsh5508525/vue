@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="css/reset.css">
+    <script src="js/vue.js"></script>
+</head>
+<style>
+    .active{
+        color: #00a0e9;
+    }
+    #choose{
+        line-height: 1.5rem;
+        height: 1.5rem;
+        display: inline-block;
+    }
+    #text{}
+    #type a{
+        margin-right: 0.3rem;
+    }
+    #type li{
+        line-height: 1.5rem;
+    }
+    mark{
+        border: 1px solid #00a0e9;
+        background: #fff;
+        margin-right: 0.3rem;
+        display: inline-block;
+        height: 1.5rem;
+        line-height: 1.5rem;
+        padding: 0 0.3rem;
+        box-sizing: border-box;
+        vertical-align: middle;
+    }
+    mark a{
+        width: 0.8rem;
+        height: 0.8rem;
+        background: #00a0e9;
+        display: inline-block;
+        line-height: 0.8rem;
+        text-align: center;
+        color: #fff;
+        margin-right: 0.1rem;
+    }
+</style>
+<body>
+<div id="app">
+    <nav id="choose">
+        你的选择：
+        <mark @click="clear(j)" v-for="item,j in choose">
+            {{item}}
+            <a href="javascript:;">x</a> </mark>
+    </nav>
+    <ul id="type">
+        <li v-for="item,index in data">
+            {{item.title}}
+            <a
+                    href="javascript:;"
+                    v-for="option,i in item.list"
+                    :class="{active: item.index === i}"
+                    @click="addChooseHandle(option,index,i)"
+            >{{option}}</a>
+        </li>
+    </ul>
+
+</div>
+
+<script>
+
+    let data=[
+        {
+            title:'品牌',
+            list:["苹果","小米","锤子","魅族","华为","三星","OPPO","vixo","乐视","360","中兴","索尼"]
+        },
+        {
+            title:'尺寸',
+            list:["3.0英寸以下","3.0-3.9英寸","4.0-4.5英寸","4.6-4.9英寸","5.0-5.5英寸","5.6-5.9英寸","6.0英寸以上"]
+        },
+        {
+            title:'系统',
+            list:["安卓","苹果","微软","其他"]
+        },
+        {
+            title:'网络',
+            list:["联通3G","双卡单4G","双卡双4G","联通4G","电信4G","移动4G"]
+        }
+    ];
+    data.forEach(item => item.index = -1);
+    new Vue({
+        el:'#app',
+        data:{
+            data,
+            choose:{}
+        },
+        methods:{
+            addChooseHandle(option,index,i){
+                console.log(option);
+                //这样给对象添加并不会响应
+               // this.choose[index] = option;
+                this.$set(this.choose,index,option);
+                this.data[index].index = i;
+            },
+            clear(j){
+               console.log(j);
+                this.$delete(this.choose,j);
+                this.data[j].index = -1;
+            }
+        }
+    })
+</script>
+</body>
+</html>

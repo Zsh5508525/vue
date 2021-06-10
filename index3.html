@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>qq分组</title>
+	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<meta name="applicable-device" content="mobile" />
+    <script src="js/vue.js"></script>
+	<link rel="stylesheet" type="text/css" href="../css/reset.css"/>
+	<script src="js/flexible.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<style>
+	ul,li,dl,dt,dd{
+		margin: 0;
+		padding: 0;
+	}
+	.list{
+		width: 80%;
+		margin: 0.3rem auto;
+	}
+	.list>div{
+		margin: 0.2rem 0;
+	}
+   .list h2{
+	   width: 100%;
+	   height: 0.8rem;
+	   line-height: 0.8rem;
+	   background: rgba(0,0,0,0.5);
+	   color: #fff;
+	   font-size: 0.3rem;
+	   padding-left: 0.3rem;
+	   box-sizing: border-box;
+   }
+	.list h2 span{
+		position: absolute;
+		left: 0;
+		top:0;
+		background: url("images/");
+	}
+   .list ul{
+	   width: 100%;
+	   box-sizing: border-box;
+	   display: none;
+	   color: #fff;
+	   line-height: 0.5rem;
+	   background: rgba(0,0,0,0.5);
+	   padding-left: 0.3rem;
+   }
+	.list ul li{
+		line-height: 0.6rem;
+		list-style: none;
+	}
+	.list .show{
+		display: block;
+	}
+	.list .active{
+		background:rgba(255,55,122,0.5);
+	}
+	.foot{
+		height: 1rem;
+		width: 100%;
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		background: #01b90a;
+		color: #fff;
+	}
+	.foot ul li {
+		width: 33.3%;
+		float: left;
+		text-align: center;
+		list-style: none;
+	}
+	.foot ul li dl dt{
+		height: 0.6rem;
+		line-height: 0.6rem;
+	}
+	.foot ul li dl dt img{
+		width: 0.5rem;
+		vertical-align: middle;
+	}
+	.foot ul li dl dd{
+		font-size: 0.24rem;
+		line-height: 0.4rem;
+	}
+</style>
+<body>
+    <div id="app">
+        <div class="list">
+        	<div v-for="item,i in qq">
+        		<h2 :class="{active:i ===index}"
+					@click="showList(i)"><span></span>
+					{{item.title}}</h2>
+	        	<ul :class="{show:i === index}">
+	        		<li v-for="option in item.list">{{option}}</li>
+	        	</ul>
+        	</div>
+        	
+        </div>
+		<div style="height: 1.5rem;"></di>
+		<div class="foot">
+			<ul>
+				<li v-for="j in footer">
+					<dl>
+						<dt><img :src="j.images"></dt>
+						<dd>{{j.nav}}</dd>
+					</dl>
+				</li>
+			</ul>
+		</div>
+    </div>
+
+    <script>
+     	let data = [
+			{
+				title:'我的好友',
+				list:["苹果","小米","锤子","魅族","华为","三星","OPPO","vixo","乐视","360","中兴","索尼"]
+			},
+			{
+				title:'家人',
+				list:["3.0英寸以下","3.0-3.9英寸","4.0-4.5英寸","4.6-4.9英寸","5.0-5.5英寸","5.6-5.9英寸","6.0英寸以上"]
+			},
+			{
+				title:'同事',
+				list:["安卓","苹果","微软","其他"]
+			},
+			{
+				title:'朋友',
+				list:["联通3G","双卡单4G","双卡双4G","联通4G","电信4G","移动4G"]
+			}
+     	];
+		let foot =[
+			{
+				images:"images/icon_chat.png",
+				nav:"最近"
+			},
+			{
+				images:"images/icon_contact.png",
+				nav:"联系人"
+			},
+			{
+				images:"images/icon_dynamic.png",
+				nav:"动态"
+			}
+
+		]
+		new Vue({
+     		el:"#app",
+			data:{
+				qq:data,
+				index:-1,
+				footer:foot
+			},
+			methods:{
+				showList(index){
+					this.index=this.index === index ? "" : index;
+
+				}
+			}
+     	})
+    </script>
+</body>
+</html>

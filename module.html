@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="app">
+			<div>{{mag}}</div>
+			<menu-item title="来自父组建的值" :content="content"></menu-item>
+			<menu-item :title="ptitle" content="hello"></menu-item>
+		</div>
+		<script type="text/javascript" src="js/vue.js"></script>
+		<script>
+			Vue.component('menu-item',{
+				props:['title','content'],
+				data:function(){
+					return{
+						msg:'子组件本身的数据'
+					}
+				},
+				template:'<div>{{msg+"----"+ title +"----"+ content}}</div>'
+			})
+			var vm = new Vue({
+				el:'#app',
+				data:{
+					mag:'父组件内容',
+					ptitle:'动态绑定属性',
+					content:'bendan'
+				}
+			})
+		</script>
+	</body>
+</html>

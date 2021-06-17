@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript" src="js/vue.js"></script>
+	</head>
+	<body>
+		<div id="app">
+			<div>父组件</div>
+			
+			<zsh-text></zsh-text>
+			<cr-text></cr-text>
+		</div>
+		<script type="text/javascript">
+			//提供事件中心
+			var hub = new Vue();
+			Vue.component('cr-text',{
+				data:function(){
+					return{
+						num:0
+					}
+				},
+				template:`
+					<div>
+						<div>CR被打:{{num}}</div>
+						<div>
+							<button @click="handle">敲打</button>
+						</div>
+					</div>
+				`,
+				methods:{
+					handle:function(){
+						//触发兄弟组件的事件
+						hub.$emit('cr-text',1)
+					}
+				},
+				mounted:function(){
+					//监听事件
+					hub.$on('zsh-text',(val)=>{
+						this.num += val
+					})
+				}
+			})
+			
+			Vue.component('zsh-text',{
+				data:function(){
+					return{
+						num:0
+					}
+				},
+				template:`
+					<div>
+						<div>ZSH被打:{{num}}</div>
+						<div>
+							<button @click="handle">敲打</button>
+						</div>
+					</div>
+				`,
+				methods:{
+					handle:function(){
+						hub.$emit('zsh-text',2)
+					}
+				},
+				mounted:function(){
+					//监听事件
+					hub.$on('cr-text',(val)=>{
+						this.num -= val
+					})
+				}
+			})
+			
+			var vm = new Vue({
+				el:'#app',
+				data:{
+					
+				}
+			})
+		</script>
+	</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>router练习</title>
+	</head>
+	<body>
+		<div id="app">
+			<h1>{{msg}}</h1>
+			<!--1.获取?后传递参数 this.$route.query.?参数后面的key-->
+				<router-link to="/users?deptid=21&name=张三" tag="span">用户管理（link）</router-link>
+				<!--2.获取路由路径中的参数  rest 方式参数获取  this.$route.param.路径中别名-->
+				<router-link to="/emps/11/李四" tag="span">员工管理（link）</router-link>
+			<div v-for="i in list">
+				<a :href="i.tourl">{{i.name}}</a>
+			</div>
+			<button @click='text'>测试js切换路由</button>
+			<router-view></router-view>
+		</div>
+	</body>
+	
+</html>
+<script type="text/javascript" src="js/vue.js" ></script>
+	<script type="text/javascript" src="js/vue-router.js" ></script>
+	<script>
+		
+		const users = {
+			template:"<div>用户管理</div>",
+			data(){
+				return {};
+			},
+			methods:{},
+			created(){
+				//获取路由路径中的参数   1.获取queryString(url?deptid=21)中传递的参数
+				console.log("deptid",this.$route.query.deptid);
+				console.log("name",this.$route.query.name);
+			}
+		}
+		const emps = {
+			template:"<div>员工管理</div>",
+			data(){
+				return {}
+			},
+			methods:{},
+			created(){
+				console.log('id',this.$route.params.id);  //获取路径中的参数
+				console.log('name',this.$route.params.name);  //获取路径中的参数
+			}
+		}
+		const router = new VueRouter({
+			routes:[
+				{path:'/',redirect:'/users'},//默认路由规则  redirect:(路由路径重定向)
+				{path:'/users',name:'users',component:users},
+				{path:'/emps/:id/:name',name:'emps',component:emps}
+			]
+		})
+		const app = new Vue({
+			el:'#app',
+			data:{
+				msg:'router练习',
+				list:
+					[{
+						tourl:'#/users',
+						name:'用户'
+					},
+					{
+						tourl:'#/emps',
+						name:'员工'
+					}]
+				
+					
+			},
+			methods:{
+				text(){
+					console.log(this);
+//					this.$router.push("/emps");
+//					this.$router.push({push:'/user'});
+					this.$router.push({name:'emps'})   //推荐使用，解耦
+				}
+			},
+			router:router,
+		})
+	</script>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>备忘录</title>
+	</head>
+	<body>
+		<div id="app">
+			<h1>{{msg}}</h1>
+			<div>
+				<span>输入备忘录尼内容：</span>
+				<input type="text" v-model="inputText" @keyup.enter="add">
+				<button @click="add">添加到备忘录</button> 
+			</div>
+			<ul v-show="items.length>0">
+				<li v-for="item,index in items" :key="item.id">{{index+1}}.{{item}}
+					<a href="" @click.prevent="del(index)">删除</a>
+					<a href="" @click.prevent="change(index)">修改</a>
+				</li>
+			</ul>
+			<h5 v-show="items.length==0">当前备忘录中还没有任何内容~~，请添加</h5>
+			<h3>当前备忘录中共：{{num}}条</h3>
+			<h3>当前备忘录中共：{{items.length}}条</h3>
+			<button @click="clear">清空备忘录</button>
+		</div>
+	</body>
+</html>
+<script type="text/javascript" src="js/vue.js" ></script>
+<script>
+	var app = new Vue({
+		el:'#app',
+		data:{
+			show:'true',
+			msg:'备忘录功能实现',
+			items:["今天要好好学习","今天要去菜市场买菜"],
+			inputText:'',
+			num:2,
+		},
+		methods:{
+			add:function(){
+				if(this.inputText == ''){
+					alert("内容不能为空");
+					return true;
+				}else{
+					this.items.push(this.inputText);
+				    this.inputText='';
+				    this.num += 1;
+				    console.log(this.num);
+				}
+			},
+			del:function(index){
+				this.items.splice(index,1);
+				this.num -= 1;
+			},
+			change(index){
+				this.inputText = this.items[index];
+			},
+			clear:function(){
+				this.items=[];
+				this.num = 0;
+			}
+		}
+	})
+</script>
